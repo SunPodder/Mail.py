@@ -1,6 +1,17 @@
 # Mail-py
 Python library for sending emails.
 
+## Installation
+```
+git clone https://github.com/SunPodder/Mail-py
+```
+```
+cd Mail-py
+```
+```
+python setup.py install
+```
+
 ## Usage
 
 Import module and create instance:
