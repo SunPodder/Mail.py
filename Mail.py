@@ -12,6 +12,8 @@ class Mail:
     self.port = 465
     self.message = MIMEMultipart()
     self.subject = ""
+    self.cc = ""
+    self.bcc = ""
     self.context = ssl.create_default_context()
     
     if email:
@@ -25,24 +27,40 @@ class Mail:
       server.login(self.email, self.password)
       server.sendmail(self.email, self.receiver, self.message.as_string())
       
-  def attach(self, image):
-    with open(image, "rb") as attachment:
+  def attach(self, file):
+    with open(file, "rb") as attachment:
       part = MIMEBase("application", "octet-stream")
       part.set_payload(attachment.read())
       encoders.encode_base64(part)
       part.add_header(
         "Content-Disposition",
-        f"attachment; filename= {image}",
+        f"attachment; filename= {file}",
       )
       self.message.attach(part)
   
-  def addText(self, text):
-    self.message.attach(MIMEText(text, 'plain'))
+  def addText(self, text, file = False):
+    if file == True:
+      with open(text, "r") as textFile:
+        self.message.attach(MIMEText((textFile.read() + "\n"), 'plain'))
+    else:
+      self.message.attach(MIMEText((text + "\n"), 'plain'))
   
-  def addHTML(self, html):
-    self.message.attach(MIMEText(html, 'html'))
-        
+  def addHTML(self, html, file = False):
+    if file == True:
+      with open(text, "r") as textFile:
+        self.message.attach(MIMEText(textFile.read(), 'html'))
+    else:
+      self.message.attach(MIMEText(html, 'html'))
+  
+  def Text(self, text, file = False):
+    self.addText(text, file)
+    
+  def HTML(self, html, file = False):
+    self.addHTML(html, file)
+    
   def __set(self):
     self.message["From"] = self.email
     self.message["To"] = self.receiver
     self.message["Subject"] = self.subject
+    self.message["Bcc"] = self.bcc
+    self.message["Cc"] = self.cc
