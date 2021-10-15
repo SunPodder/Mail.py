@@ -1,12 +1,12 @@
-# Mail-py
+# Mail.py
 Python library for sending emails.
 
 ## Installation
 ```
-git clone https://github.com/SunPodder/Mail-py
+git clone https://github.com/SunPodder/Mail.py
 ```
 ```
-cd Mail-py
+cd Mail.py
 ```
 ```
 python setup.py install
@@ -33,15 +33,30 @@ mail.addText("Hello world!\nThis is a test mail.\nHappy Coding!")
 #adds text to email body
 mail.send()
 ```
+
+Short hand:
+```
+mail.Text("Hello world!\nThis is a test mail.\nHappy Coding!")
+mail.send()
+```
 <br><br>
 Send mail in HTML format:
 ```
 mail.addHTML("<h1>This is a heading</h1>") #Adds HTML code to email body. Can be used for formatting emails.
 mail.send()
 ```
+Short hand:
+```
+mail.HTML("<h1>This is a heading</h1>")
+mail.send()
+```
+<br><br>
+Add mail body text/html from file:
+```
+mail.addHTML("<h1>This is a heading</h1>", True)
+mail.send()
+```
 <br><br>
 Add files via email attachment:
 ```
 mail.attach("image.jpg")
-mail.send()
-```
