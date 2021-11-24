@@ -3,6 +3,11 @@ Python library for sending emails.
 
 ## Installation
 ```
+pip install https://github.com/SunPodder/Mail.py
+```
+
+## Build from source
+```
 git clone https://github.com/SunPodder/Mail.py
 ```
 ```
