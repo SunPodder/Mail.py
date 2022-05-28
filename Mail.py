@@ -23,20 +23,28 @@ class Mail:
   
   def send(self):
     self.__set()
-    with smtplib.SMTP_SSL("smtp.gmail.com", self.port, context=self.context) as server:
+    
+    try:
+      server = smtplib.SMTP_SSL("smtp.gmail.com", self.port, context=self.context)
       server.login(self.email, self.password)
       server.sendmail(self.email, self.receiver, self.message.as_string())
+      server.quit()
+    except SMTPAuthenticationError as e:
+      print("Wrong email or password!")
+      print(e)
+    
+    self.message = MIMEMultipart()
       
   def attach(self, file):
-    with open(file, "rb") as attachment:
-      part = MIMEBase("application", "octet-stream")
-      part.set_payload(attachment.read())
-      encoders.encode_base64(part)
-      part.add_header(
-        "Content-Disposition",
-        f"attachment; filename= {file}",
-      )
-      self.message.attach(part)
+    attachment = open(file, "rb")
+    part = MIMEBase("application", "octet-stream")
+    part.set_payload(attachment.read())
+    encoders.encode_base64(part)
+    part.add_header(
+      "Content-Disposition",
+      f"attachment; filename={''.join(file.split('/')[-1])}",
+    )
+    self.message.attach(part)
   
   def addText(self, text, file = False):
     if file == True:
